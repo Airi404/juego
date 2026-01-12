@@ -11,12 +11,14 @@ class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
-
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+ * Relación One-to-One o Many-to-One con Person.
+ * (Cumple con el Objetivo 2 de la Task 4)
+ */
+public function person()
+{
+    return $this->hasOne(Person::class);
+}
     protected $fillable = [
         'name',
         'email',
