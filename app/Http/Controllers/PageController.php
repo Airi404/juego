@@ -60,13 +60,26 @@ class PageController extends Controller
     }
 
    public function logout(Request $request) {
-    Auth::logout();
+        Auth::logout();
 
-    // Invalidamos la sesión por seguridad
-    $request->session()->invalidate();
-    $request->session()->regenerateToken();
+        // Invalidamos la sesión por seguridad
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-    // Redirigimos al home (que ya sabemos que existe y tiene nombre)
-    return redirect()->route('home');
-}
+        // Redirigimos al home (que ya sabemos que existe y tiene nombre)
+        return redirect()->route('home');
+    }
+    public function showPerson($slug)
+    {
+        // Buscamos a la persona y cargamos su usuario asociado para sacar el email
+        $person = \App\Models\Person::where('slug', $slug)->firstOrFail();
+        
+        // Buscamos al usuario dueño de esta persona para obtener su correo
+        $userAccount = \App\Models\User::find($person->user_id);
+
+        return view('persona', [
+            'person' => $person,
+            'email' => $userAccount ? $userAccount->email : 'Sin correo',
+        ]);
+    }
 }

@@ -50,26 +50,35 @@
     
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         @foreach($persons as $person)
-            <div class="flex items-center space-x-4 p-4 bg-slate-800 rounded-xl mb-4 border border-slate-700">
-                
-                <div class="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg border-2 border-slate-600">
-                    <span class="text-white font-black text-xl tracking-tighter uppercase">
-                        {{ substr($person->name, 0, 1) }}
-                    </span>
-                </div>
-
-                <div class="flex-grow">
-                    <div class="flex items-center justify-between">
-                        <h3 class="text-white font-bold text-lg">{{ $person->name }}</h3>
-                        <span class="text-xs font-mono text-indigo-400 bg-indigo-500/10 px-2 py-1 rounded">
-                            {{ $person->slug }}
-                        </span>
+            <a href="{{ route('person.show', $person->slug) }}" class="block group transition-transform hover:scale-[1.02]">
+                <div class="flex items-center space-x-4 p-4 bg-slate-800 rounded-xl mb-4 border border-slate-700 group-hover:border-indigo-500 transition-colors shadow-lg">
+                    
+                    <div class="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg border-2 border-slate-600 overflow-hidden">
+                        @if($person->avatar)
+                            <img src="{{ asset('storage/' . $person->avatar) }}" class="w-full h-full object-cover">
+                        @else
+                            <span class="text-white font-black text-xl tracking-tighter uppercase">
+                                {{ substr($person->name, 0, 1) }}
+                            </span>
+                        @endif
                     </div>
-                    <p class="text-slate-400 text-xs">
-                        🎂 Nacimiento: {{ \Carbon\Carbon::parse($person->birth)->format('d M, Y') }}
-                    </p>
+
+                    <div class="flex-grow">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-white font-bold text-lg group-hover:text-indigo-300 transition-colors">{{ $person->name }}</h3>
+                            <span class="text-xs font-mono text-indigo-400 bg-indigo-500/10 px-2 py-1 rounded">
+                                {{ $person->slug }}
+                            </span>
+                        </div>
+                        <p class="text-slate-400 text-xs italic">
+                            🎂 Nacimiento: {{ \Carbon\Carbon::parse($person->birth)->format('d M, Y') }}
+                        </p>
+                        <p class="text-[10px] text-indigo-500 font-bold uppercase tracking-widest mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            Ver Perfil →
+                        </p>
+                    </div>
                 </div>
-            </div>
+            </a>
         @endforeach
     </div>
 </section>
