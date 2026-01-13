@@ -18,14 +18,18 @@
                     <span class="text-xs uppercase font-bold tracking-tighter">Tienda</span>
                 </a>
                 
-                <a href="/juego" class="group flex items-center space-x-1 text-slate-300 hover:text-indigo-400 transition-colors">
+                <a href="{{ route('game.list') }}" class="group flex items-center space-x-1 text-slate-300 hover:text-indigo-400 transition-colors">
                     <span class="text-xs uppercase font-bold tracking-tighter">Juego</span>
                 </a>
 
                 <div class="h-4 w-px bg-slate-700"></div>
-
+                <div class="flex flex-col items-end mr-2">
+                    <span class="text-[10px] text-indigo-400 font-black uppercase tracking-widest">Online</span>
+                    <span class="text-xs font-bold text-white">{{ Auth::user()->name }}</span>
+                </div>
                 <a href="{{ route('profile.edit') }}" class="flex items-center space-x-3 group bg-slate-900/50 py-1 pl-1 pr-3 rounded-full border border-slate-700 hover:border-indigo-500/50 transition-all">
                     <div class="w-8 h-8 rounded-full overflow-hidden border border-indigo-500 shadow-sm shadow-indigo-500/20">
+                        
                         @php
                             $navPerson = \App\Models\Person::where('user_id', Auth::id())->first();
                         @endphp

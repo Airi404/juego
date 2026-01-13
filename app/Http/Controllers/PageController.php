@@ -82,4 +82,19 @@ class PageController extends Controller
             'email' => $userAccount ? $userAccount->email : 'Sin correo',
         ]);
     }
+    public function storeProduct(Request $request) {
+        $request->validate([
+            'name' => 'required',
+            'price' => 'required|numeric',
+        ]);
+
+        // Creamos el producto pero ASOCIANDO el ID del usuario logueado
+        \App\Models\Product::create([
+            'name' => $request->name,
+            'price' => $request->price,
+            'user_id' => auth()->id(), // Requisito clave: asociar al usuario [cite: 225, 296]
+        ]);
+
+        return redirect()->back();
+    }
 }
