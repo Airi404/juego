@@ -29,6 +29,7 @@ Route::middleware('guest')->group(function () {
 // --- RUTAS PROTEGIDAS (Solo usuarios autenticados) ---
 Route::middleware('auth')->group(function () {
     
+    Route::get('/game/{id}/leave', [GameController::class, 'leave'])->name('game.leave');
     // TASK 9: TIENDA / MARKETPLACE
     // Muestra la lista y el formulario de creación en la misma vista
     Route::get('/tienda', [ProductController::class, 'index'])->name('tienda.index');

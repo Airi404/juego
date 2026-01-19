@@ -14,6 +14,7 @@ return new class extends Migration
         $table->string('board')->default(' , , , , , , , , '); // 9 espacios vacíos
         $table->string('active_player')->default('X');
         $table->string('state')->default('active'); // active, won_X, won_O, tie
+        $table->foreignId('player2_id')->nullable()->constrained('users');
         $table->timestamps();
     });
 }
