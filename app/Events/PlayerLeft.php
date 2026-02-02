@@ -1,14 +1,13 @@
 <?php
-
 namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow; // Importante
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class PlayerLeft implements ShouldBroadcast
+class PlayerLeft implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -21,12 +20,12 @@ class PlayerLeft implements ShouldBroadcast
         $this->playerName = $playerName;
     }
 
-    public function broadcastOn(): array
+    public function broadcastOn()
     {
-        return [new Channel('game.' . $this->gameId)];
+        return new Channel('game.' . $this->gameId);
     }
 
-    public function broadcastAs(): string
+    public function broadcastAs()
     {
         return 'PlayerLeft';
     }

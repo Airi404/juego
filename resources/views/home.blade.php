@@ -37,9 +37,9 @@
                 <a href="/tienda" class="bg-indigo-600 hover:bg-indigo-500 px-8 py-4 rounded-2xl font-bold text-lg transition-all transform hover:scale-105">
                     Ir a la Tienda
                 </a>
-                <button class="bg-slate-800 hover:bg-slate-700 px-8 py-4 rounded-2xl font-bold text-lg transition-all">
-                    Ver Social
-                </button>
+                <a href="/external-api" class="bg-slate-800 hover:bg-slate-700 px-8 py-4 rounded-2xl font-bold text-lg transition-all">
+                    Ver pokemons
+                </a>
             </div>
             
         </div>

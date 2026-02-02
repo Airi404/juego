@@ -15,10 +15,10 @@ class RoomCreated implements ShouldBroadcast
 
     public $game;
 
-    public function __construct(Game $game)
+   public function __construct(Game $game)
     {
-        // Cargamos la relación del usuario para mostrar el nombre del creador en la lista
-        $this->game = $game->load('user');
+        // Forzamos a que el objeto olvide cualquier relación previa y cargue solo lo necesario
+        $this->game = $game->withoutRelations()->load('user');
     }
 
     public function broadcastOn(): array

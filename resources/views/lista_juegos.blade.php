@@ -65,17 +65,26 @@
                                 </div>
                             </div>
 
-                            <div class="flex gap-3">
-                                @if(!$game->player2_id)
-                                    <a href="{{ route('game.show', $game->id) }}" 
-                                        class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-tighter transition-all shadow-lg shadow-indigo-900/20">
-                                        Entrar a Jugar
-                                    </a>
-                                @endif
-                                <a href="{{ route('game.show', $game->id) }}" 
-                                    class="bg-slate-700 hover:bg-slate-600 text-slate-300 px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-tighter transition-all">
-                                    Espectador
-                                </a>
+                          <div class="flex items-center gap-4">
+                                <div class="text-[10px] font-bold px-2 py-1 rounded border {{ $game->player2_id ? 'border-red-500/50 text-red-400' : 'border-green-500/50 text-green-400' }}">
+                                    {{ $game->player2_id ? '2/2 FULL' : '1/2 LIBRE' }}
+                                </div>
+
+                                <div class="flex gap-3">
+                                    @if(!$game->player2_id)
+                                        {{-- Para jugar --}}
+                                        <a href="{{ route('game.show', $game->id) }}" 
+                                            class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2 rounded-xl text-[10px] font-black uppercase transition-all shadow-lg">
+                                            Entrar a Jugar
+                                        </a>
+                                    @else
+                                        {{-- Para espectador: añadimos ?spectate=1 --}}
+                                        <a href="{{ route('game.show', $game->id) }}?spectate=1" 
+                                            class="bg-slate-700 hover:bg-slate-600 text-slate-300 px-5 py-2 rounded-xl text-[10px] font-black uppercase transition-all shadow-lg">
+                                            Espectador
+                                        </a>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     @empty
@@ -95,14 +104,25 @@
     }
 </style>
 <script type="module">
-    document.addEventListener('DOMContentLoaded', () => {
-        if (window.Echo) {
-            window.Echo.channel('lobby')
-                .listen('.RoomCreated', (e) => { // ¡EL PUNTO (.) ES OBLIGATORIO!
-                    console.log('Nueva sala recibida:', e);
-                    window.location.reload(); 
-                });
-        }
-    });
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.Echo) {
+        window.Echo.channel('lobby')
+            .listen('.RoomCreated', (e) => {
+                const myId = {{ Auth::id() }};
+                
+                // Si la sala es mía y está vacía, es que la acabo de crear.
+                // NO recargo para que el redirect del controlador funcione.
+                if (e.game.user_id == myId && e.game.player2_id == null) {
+                    return;
+                }
+
+                // En cualquier otro caso (alguien se une, alguien sale, se borra), RECARGO.
+                window.location.reload(); 
+            })
+            .listen('.GameDeleted', (e) => {
+                window.location.reload(); 
+            });
+    }
+});
 </script>
 @endsection
