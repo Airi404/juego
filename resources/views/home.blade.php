@@ -40,6 +40,9 @@
                 <a href="/external-api" class="bg-slate-800 hover:bg-slate-700 px-8 py-4 rounded-2xl font-bold text-lg transition-all">
                     Ver pokemons
                 </a>
+                <a href="/chatbot" class="bg-slate-800 hover:bg-slate-700 px-8 py-4 rounded-2xl font-bold text-lg transition-all">
+                    Probar IA
+                </a>
             </div>
             
         </div>

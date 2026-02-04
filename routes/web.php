@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\ExternalApiController;
 use Illuminate\Support\Facades\Route;
+use Gemini\Laravel\Facades\Gemini; // Asegúrate de tener este import si usas el facade
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +17,17 @@ use Illuminate\Support\Facades\Route;
 // --- RUTAS PÚBLICAS ---
 Route::get('/', [PageController::class, 'homepage'])->name('home');
 Route::get('/external-api', [ExternalApiController::class, 'index'])->name('api.external');
+
+// --- TASK 15: AI CHATBOT (Gemini) ---
+// Estas rutas permiten cumplir con el objetivo de crear un formulario y mostrar la respuesta[cite: 24, 30].
+Route::get('/chatbot', [PageController::class, 'chatbotIndex'])->name('chatbot.index');
+Route::post('/chatbot', [PageController::class, 'chatbotSendMessage'])->name('chatbot.send');
+
+// Ruta de test rápido (opcional, para verificar el Objetivo 3) [cite: 17, 23]
+Route::get('/test-ai', function () {
+    $result = Gemini::geminiFlash()->generateContent("Say hello!");
+    return $result->text();
+});
 
 // --- SOLO INVITADOS (Guest) ---
 Route::middleware('guest')->group(function () {
@@ -29,7 +41,6 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     
     // --- TASK 10 & 11: TIC TAC TOE ---
-    // Importante: 'leave' debe ir ANTES que el show dinámico {id}
     Route::get('/juego/{id}/leave', [GameController::class, 'leave'])->name('game.leave');
     Route::get('/juegos', [GameController::class, 'index'])->name('game.list');
     Route::post('/game/create', [GameController::class, 'store'])->name('game.store');

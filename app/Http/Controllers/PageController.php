@@ -97,4 +97,28 @@ class PageController extends Controller
 
         return redirect()->back();
     }
+    public function chatbotIndex() 
+    {
+        return view('chatbot');
+    }
+
+    public function chatbotSendMessage(Request $request) 
+    {
+        $request->validate(['prompt' => 'required|string']);
+
+        // Parche de SSL para Windows
+        $httpClient = new \GuzzleHttp\Client(['verify' => false]);
+        
+        $client = \Gemini::factory()
+            ->withApiKey(env('GEMINI_API_KEY'))
+            ->withHttpClient($httpClient)
+            ->make();
+
+        $result = $client->generativeModel(model: 'gemini-2.5-flash')->generateContent($request->input('prompt'));
+        
+        return view('chatbot', [
+            'respuesta' => $result->text(),
+            'prompt' => $request->input('prompt')
+        ]);
+    }
 }
